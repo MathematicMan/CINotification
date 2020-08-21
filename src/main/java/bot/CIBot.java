@@ -61,6 +61,6 @@ public class CIBot extends TelegramLongPollingBot {
 
     @Override
     public String getBotToken() {
-        return "123654789:ASD_QWERYTMZXCASG";
+        return System.getenv("tokenId");
     }
 }
