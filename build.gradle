@@ -23,4 +23,5 @@ repositories {
 
 dependencies {
     compile 'org.telegram:telegrambots:+'
+    compile 'ch.qos.logback:logback-classic:1.2.3'
 }
