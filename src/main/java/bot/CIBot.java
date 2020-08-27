@@ -14,7 +14,6 @@ import java.net.URL;
 public class CIBot extends TelegramLongPollingBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(CIBot.class);
 
-
     @Override
     public void onUpdateReceived(Update update) {
         LOGGER.info("Update is comming '{}'",update);
@@ -37,6 +36,13 @@ public class CIBot extends TelegramLongPollingBot {
         }
     }
 
+    protected void sendNotification() {
+        long chatId = -311188490;
+        String messageText = "This is test message from REST API";
+        SendMessage message = new SendMessage().setChatId(chatId).setText(messageText);
+        sendTextMessage(message);
+    }
+
     private void sendTextMessage(final SendMessage message){
         try {
             execute(message);
@@ -52,7 +58,6 @@ public class CIBot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public String getBotUsername() {
