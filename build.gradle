@@ -4,8 +4,12 @@
  * This is a general purpose Gradle build.
  * Learn how to create Gradle builds at https://guides.gradle.org/creating-new-gradle-builds
  */
-apply plugin: 'java'
-apply plugin: 'application'
+plugins {
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'java'
+    id 'application'
+}
 
 mainClassName = 'CIBotMain'
 sourceCompatibility = 11
@@ -24,4 +28,12 @@ repositories {
 dependencies {
     compile 'org.telegram:telegrambots:+'
     compile 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+test {
+    useJUnitPlatform()
 }
