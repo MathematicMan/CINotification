@@ -1,5 +1,4 @@
-GET http://localhost:8080/notification/test
-
+GET http://localhost:8080/notification/test?buildStatus=Success
 ###
 
 GET http://localhost:8080/notification/test2?buildStatus=Succes&buildNumber=123

@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class CILongPollingBot extends TelegramLongPollingBot {
@@ -16,10 +17,10 @@ public class CILongPollingBot extends TelegramLongPollingBot {
 
     @Override
     public void onUpdateReceived(Update update) {
-        LOGGER.info("Update is comming '{}'",update);
+        LOGGER.info("Update is comming '{}'", update);
         if (update.hasMessage() && update.getMessage().hasText()) {
             String incomingMessage = update.getMessage().getText();
-            LOGGER.info("[Incoming message] '{}'",incomingMessage);
+            LOGGER.info("[Incoming message] '{}'", incomingMessage);
             long chat_id = update.getMessage().getChatId();
             if (incomingMessage.startsWith("[Hey boy]")) {
                 String messageText = update.getMessage().getText();
@@ -36,20 +37,27 @@ public class CILongPollingBot extends TelegramLongPollingBot {
         }
     }
 
-    void sendNotification(final String buildStatus, final String buildNumber, final URL buildLink, final String failedStage) {
+    protected void sendNotification(final String buildStatus, final String buildNumber, final String buildLink, final String failedStage)
+        throws MalformedURLException {
         long chatId = -311188490;
         String messageText = null;
+        if (buildStatus.isBlank()) {
+            paramIsMissing(buildStatus);
+        }
+        if (buildNumber.isBlank()) {
+            paramIsMissing(buildNumber);
+        }
         if (buildStatus.equals("Success")) {
             messageText = "Build №" + buildNumber + " is Successful";
-        }
-        else {
-            messageText = "Build №" + buildNumber + "finished on Stage='" + failedStage + "' with Status='" + buildStatus + "' \n See details here" + buildLink;
+        } else {
+            URL linkUrl = new URL(buildLink);
+            messageText = "Build №" + buildNumber + "finished on Stage='" + failedStage + "' with Status='" + buildStatus + "' \n See details here: " + linkUrl;
         }
         SendMessage message = new SendMessage().setChatId(chatId).setText(messageText);
         sendTextMessage(message);
     }
 
-    private void sendTextMessage(final SendMessage message){
+    private void sendTextMessage(final SendMessage message) {
         try {
             execute(message);
         } catch (TelegramApiException e) {
@@ -63,6 +71,10 @@ public class CILongPollingBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    private String paramIsMissing(final String paramName) {
+        return "Param '" + paramName + "' is missing";
     }
 
     @Override
