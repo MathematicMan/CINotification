@@ -11,8 +11,8 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import java.io.*;
 import java.net.URL;
 
-public class CIBot extends TelegramLongPollingBot {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CIBot.class);
+public class CILongPollingBot extends TelegramLongPollingBot {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CILongPollingBot.class);
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -36,7 +36,7 @@ public class CIBot extends TelegramLongPollingBot {
         }
     }
 
-    protected void sendNotification() {
+    protected void sendNotification(final String buildStatus, final String buildNumber, final String buildLink, final String failedStage) {
         long chatId = -311188490;
         String messageText = "This is test message from REST API";
         SendMessage message = new SendMessage().setChatId(chatId).setText(messageText);

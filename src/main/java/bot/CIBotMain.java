@@ -19,7 +19,7 @@ public class CIBotMain {
         TelegramBotsApi botApi = new TelegramBotsApi();
 
         try {
-            botApi.registerBot(new CIBot());
+            botApi.registerBot(new CILongPollingBot());
         } catch (TelegramApiRequestException e) {
             e.printStackTrace();
         }
