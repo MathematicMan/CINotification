@@ -36,9 +36,15 @@ public class CILongPollingBot extends TelegramLongPollingBot {
         }
     }
 
-    protected void sendNotification(final String buildStatus, final String buildNumber, final String buildLink, final String failedStage) {
+    void sendNotification(final String buildStatus, final String buildNumber, final URL buildLink, final String failedStage) {
         long chatId = -311188490;
-        String messageText = "This is test message from REST API";
+        String messageText = null;
+        if (buildStatus.equals("Success")) {
+            messageText = "Build №" + buildNumber + " is Successful";
+        }
+        else {
+            messageText = "Build №" + buildNumber + "finished on Stage='" + failedStage + "' with Status='" + buildStatus + "' \n See details here" + buildLink;
+        }
         SendMessage message = new SendMessage().setChatId(chatId).setText(messageText);
         sendTextMessage(message);
     }
