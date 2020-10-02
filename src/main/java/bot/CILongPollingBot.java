@@ -41,12 +41,6 @@ public class CILongPollingBot extends TelegramLongPollingBot {
         throws MalformedURLException {
         long chatId = -311188490;
         String messageText = null;
-        if (buildStatus.isBlank()) {
-            paramIsMissing(buildStatus);
-        }
-        if (buildNumber.isBlank()) {
-            paramIsMissing(buildNumber);
-        }
         if (buildStatus.equals("Success")) {
             messageText = "Build №" + buildNumber + " is Successful";
         } else {
@@ -73,7 +67,7 @@ public class CILongPollingBot extends TelegramLongPollingBot {
         }
     }
 
-    private String paramIsMissing(final String paramName) {
+    protected String paramIsMissing(final String paramName) {
         return "Param '" + paramName + "' is missing";
     }
 
