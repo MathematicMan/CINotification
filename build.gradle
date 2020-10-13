@@ -11,13 +11,13 @@ plugins {
     id 'application'
 }
 
-mainClassName = 'CIBotMain'
+mainClassName = 'cinotification.CIBotMain'
 sourceCompatibility = 11
 targetCompatibility = 11
 version = '1.0'
 
 jar {
-    manifest { attributes "Main-Class": "bot.CIBotMain" }
+    manifest { attributes "Main-Class": "cinotification.CIBotMain" }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
 }
 
