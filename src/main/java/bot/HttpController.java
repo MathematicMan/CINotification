@@ -11,6 +11,11 @@ import java.util.Map;
 @RequestMapping("/notification")
 public class HttpController extends CILongPollingBot {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpController.class);
+    private ResponseService responseService;
+
+    HttpController(ResponseService responseService) {
+        this.responseService = responseService;
+    }
 
     @GetMapping("/buildStage")
     public void sendBuildStageMessage(@RequestParam Map<String, String> params) throws MalformedURLException {
@@ -18,13 +23,17 @@ public class HttpController extends CILongPollingBot {
         var buildStatus = params.get("buildStatus");
         var buildLink = params.get("buildLink");
         var failedStage = params.get("failedStage");
+        var jobName = params.get("jobName");
         if (buildStatus.isBlank()) {
-            paramIsMissing(buildStatus);
+            responseService.paramIsMissing(buildStatus);
         }
         if (buildNumber.isBlank()) {
-            paramIsMissing(buildNumber);
+            responseService.paramIsMissing(buildNumber);
+        }
+        if (jobName.isBlank()) {
+            responseService.paramIsMissing(jobName);
         } else {
-            sendNotification(buildStatus, buildNumber, buildLink, failedStage);
+            sendNotification(jobName, buildStatus, buildNumber, buildLink, failedStage);
         }
     }
 

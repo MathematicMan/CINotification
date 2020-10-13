@@ -37,15 +37,14 @@ public class CILongPollingBot extends TelegramLongPollingBot {
         }
     }
 
-    protected void sendNotification(final String buildStatus, final String buildNumber, final String buildLink, final String failedStage)
+    protected void sendNotification(final String jobName, String buildStatus, final String buildNumber, final String buildLink, final String failedStage)
         throws MalformedURLException {
         long chatId = -311188490;
         String messageText = null;
         if (buildStatus.equals("Success")) {
-            messageText = "Build №" + buildNumber + " is Successful";
+            messageText = "[" + jobName + "] Build №" + buildNumber + " is Successful";
         } else {
-            URL linkUrl = new URL(buildLink);
-            messageText = "Build №" + buildNumber + "finished on Stage='" + failedStage + "' with Status='" + buildStatus + "' \n See details here: " + linkUrl;
+            messageText = "[" + jobName + "] Build №" + buildNumber + " finished on Stage='" + failedStage + "' with Status='" + buildStatus + "' \nSee details here: " + buildLink;
         }
         SendMessage message = new SendMessage().setChatId(chatId).setText(messageText);
         sendTextMessage(message);
@@ -65,10 +64,6 @@ public class CILongPollingBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
-
-    protected String paramIsMissing(final String paramName) {
-        return "Param '" + paramName + "' is missing";
     }
 
     @Override
